@@ -1,6 +1,6 @@
 package com.tnovoselec.lifesumfoodsearch.api;
 
-import com.tnovoselec.lifesumfoodsearch.api.model.FoodResponse;
+import com.tnovoselec.lifesumfoodsearch.api.model.ApiFoodResponse;
 
 import rx.Observable;
 
@@ -12,7 +12,7 @@ public class LifesumClient {
     this.lifesumApi = lifesumApi;
   }
 
-  public Observable<FoodResponse> getFoods(String name, String language, String country) {
+  public Observable<ApiFoodResponse> getFoods(String name, String language, String country) {
     return lifesumApi.getFood(name, language, country);
   }
 }

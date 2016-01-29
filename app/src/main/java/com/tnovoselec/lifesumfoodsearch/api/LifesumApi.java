@@ -1,6 +1,6 @@
 package com.tnovoselec.lifesumfoodsearch.api;
 
-import com.tnovoselec.lifesumfoodsearch.api.model.FoodResponse;
+import com.tnovoselec.lifesumfoodsearch.api.model.ApiFoodResponse;
 
 import retrofit.http.GET;
 import retrofit.http.Headers;
@@ -14,6 +14,6 @@ public interface LifesumApi {
 
   @GET("/icebox/v1/foods/{language}/{country}/{name}")
   @Headers("Authorization: " + AUTH_HEADER)
-  Observable<FoodResponse> getFood(@Path("name") String name, @Path("language") String language, @Path("country") String country);
+  Observable<ApiFoodResponse> getFood(@Path("name") String name, @Path("language") String language, @Path("country") String country);
 
 }

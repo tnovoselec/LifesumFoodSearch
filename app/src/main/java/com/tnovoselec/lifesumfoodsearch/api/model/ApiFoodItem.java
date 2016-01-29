@@ -1,6 +1,6 @@
 package com.tnovoselec.lifesumfoodsearch.api.model;
 
-public class FoodItem {
+public class ApiFoodItem {
 
   public String categoryid;
 

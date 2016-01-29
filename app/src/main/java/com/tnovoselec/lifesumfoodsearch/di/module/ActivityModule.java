@@ -10,6 +10,8 @@ import android.view.MenuInflater;
 import com.tnovoselec.lifesumfoodsearch.di.BaseActivity;
 import com.tnovoselec.lifesumfoodsearch.di.qualifier.ForActivity;
 import com.tnovoselec.lifesumfoodsearch.di.scope.ActivityScope;
+import com.tnovoselec.lifesumfoodsearch.presenter.FoodListPresenter;
+import com.tnovoselec.lifesumfoodsearch.presenter.FoodListPresenterImpl;
 
 import dagger.Module;
 import dagger.Provides;
@@ -64,6 +66,12 @@ public final class ActivityModule {
   @ActivityScope
   LayoutInflater provideLayoutInflater(@ForActivity Context activityContext) {
     return (LayoutInflater) activityContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+  }
+
+  @Provides
+  @ActivityScope
+  FoodListPresenter provideFoodListPresener(FoodListPresenterImpl foodListPresenter){
+    return foodListPresenter;
   }
 
 }

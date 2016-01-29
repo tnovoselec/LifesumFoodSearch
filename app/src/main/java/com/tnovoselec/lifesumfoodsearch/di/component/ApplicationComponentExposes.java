@@ -7,6 +7,8 @@ import com.tnovoselec.lifesumfoodsearch.api.LifesumApi;
 import com.tnovoselec.lifesumfoodsearch.api.LifesumClient;
 import com.tnovoselec.lifesumfoodsearch.di.qualifier.ForApplication;
 
+import io.realm.Realm;
+
 public interface ApplicationComponentExposes {
 
   @ForApplication
@@ -17,4 +19,6 @@ public interface ApplicationComponentExposes {
   LifesumApi provideLifesumApi();
 
   LifesumClient provideLifesumClient();
+
+  Realm provideRealm();
 }

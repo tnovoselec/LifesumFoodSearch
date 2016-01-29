@@ -16,6 +16,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
@@ -71,6 +72,12 @@ public final class ApplicationModule {
   @Singleton
   protected LifesumClient getLifesumClient(LifesumApi lifesumApi){
     return new LifesumClient(lifesumApi);
+  }
+
+  @Provides
+  @Singleton
+  protected Realm getRealm(){
+    return Realm.getDefaultInstance();
   }
 
 }

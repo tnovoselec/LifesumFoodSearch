@@ -1,46 +1,61 @@
 package com.tnovoselec.lifesumfoodsearch.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import com.tnovoselec.lifesumfoodsearch.R;
-import com.tnovoselec.lifesumfoodsearch.api.LifesumClient;
+import com.tnovoselec.lifesumfoodsearch.adapter.FoodItemsAdapter;
+import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
 import com.tnovoselec.lifesumfoodsearch.di.BaseActivity;
 import com.tnovoselec.lifesumfoodsearch.di.component.ActivityComponent;
+import com.tnovoselec.lifesumfoodsearch.presenter.FoodListPresenter;
+import com.tnovoselec.lifesumfoodsearch.view.FoodListView;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import butterknife.Bind;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements FoodListView {
+
+  @Bind(R.id.food_items_recycler)
+  RecyclerView foodItemsRecycler;
+  @Bind(R.id.toolbar)
+  Toolbar toolbar;
 
   @Inject
-  LifesumClient lifesumClient;
+  FoodListPresenter foodListPresenter;
+
+  private FoodItemsAdapter foodItemsAdapter;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-        .setAction("Action", null).show());
+    foodItemsRecycler.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.VERTICAL, false));
+    foodItemsAdapter = new FoodItemsAdapter();
+    foodItemsRecycler.setAdapter(foodItemsAdapter);
+  }
 
-    lifesumClient.getFoods("Orange", "en", "us")
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<Object>() {
-          @Override
-          public void call(Object o) {
-            System.out.print(o);
-          }
-        });
+  @Override
+  protected void onResume() {
+    super.onResume();
+    foodListPresenter.activate();
+    foodListPresenter.takeView(this);
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    foodListPresenter.deactivate();
+    foodListPresenter.releaseView();
   }
 
   @Override
@@ -49,4 +64,18 @@ public class MainActivity extends BaseActivity {
   }
 
 
+  @Override
+  public void renderItems(List<DbFoodItem> foodItems) {
+    foodItemsAdapter.setData(foodItems);
+  }
+
+  @Override
+  public void showProgress() {
+
+  }
+
+  @Override
+  public void hideProgress() {
+
+  }
 }

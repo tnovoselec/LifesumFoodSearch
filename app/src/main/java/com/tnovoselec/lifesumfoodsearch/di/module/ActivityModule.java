@@ -7,11 +7,16 @@ import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 
+import com.tnovoselec.lifesumfoodsearch.Router;
 import com.tnovoselec.lifesumfoodsearch.di.BaseActivity;
 import com.tnovoselec.lifesumfoodsearch.di.qualifier.ForActivity;
 import com.tnovoselec.lifesumfoodsearch.di.scope.ActivityScope;
+import com.tnovoselec.lifesumfoodsearch.presenter.FoodDetailsPresenter;
+import com.tnovoselec.lifesumfoodsearch.presenter.FoodDetailsPresenterImpl;
 import com.tnovoselec.lifesumfoodsearch.presenter.FoodListPresenter;
 import com.tnovoselec.lifesumfoodsearch.presenter.FoodListPresenterImpl;
+import com.tnovoselec.lifesumfoodsearch.presenter.FoodSearchPresenter;
+import com.tnovoselec.lifesumfoodsearch.presenter.FoodSearchPresenterImpl;
 
 import dagger.Module;
 import dagger.Provides;
@@ -70,8 +75,27 @@ public final class ActivityModule {
 
   @Provides
   @ActivityScope
+  protected Router getRouter(@ForActivity Context activityContext){
+    return new Router(activityContext);
+  }
+
+  @Provides
+  @ActivityScope
   FoodListPresenter provideFoodListPresener(FoodListPresenterImpl foodListPresenter){
     return foodListPresenter;
+  }
+
+  @Provides
+  @ActivityScope
+  FoodSearchPresenter provideFoodSearchPresenter(FoodSearchPresenterImpl foodSearchPresenter){
+    return foodSearchPresenter;
+  }
+
+
+  @Provides
+  @ActivityScope
+  FoodDetailsPresenter provideFoodDetailsPresenter(FoodDetailsPresenterImpl foodDetailsPresenter){
+    return foodDetailsPresenter;
   }
 
 }

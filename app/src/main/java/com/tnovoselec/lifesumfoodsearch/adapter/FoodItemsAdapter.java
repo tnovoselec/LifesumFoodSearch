@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.tnovoselec.lifesumfoodsearch.R;
 import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -17,7 +16,17 @@ import butterknife.ButterKnife;
 
 public class FoodItemsAdapter extends RecyclerView.Adapter<FoodItemsAdapter.FoodItemViewHolder> {
 
-  private final List<DbFoodItem> foodItems = new ArrayList<>();
+  public interface OnFoodItemClickedListener{
+    void onFoodItemClicked(DbFoodItem dbFoodItem);
+  }
+
+  private final List<DbFoodItem> foodItems;
+  private final OnFoodItemClickedListener onFoodItemClickedListener;
+
+  public FoodItemsAdapter(List<DbFoodItem> foodItems, OnFoodItemClickedListener onFoodItemClickedListener) {
+    this.foodItems = foodItems;
+    this.onFoodItemClickedListener = onFoodItemClickedListener;
+  }
 
   @Override
   public FoodItemsAdapter.FoodItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,17 +44,13 @@ public class FoodItemsAdapter extends RecyclerView.Adapter<FoodItemsAdapter.Food
     return foodItems.size();
   }
 
-  public void setData(List<DbFoodItem> foodItems){
-    this.foodItems.clear();
-    this.foodItems.addAll(foodItems);
-    notifyDataSetChanged();
-  }
-
   class FoodItemViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.item_food_title)
     TextView itemFoodTitle;
 
+    @Bind(R.id.item_food_category)
+    TextView itemFoodCategory;
     public FoodItemViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
@@ -53,6 +58,8 @@ public class FoodItemsAdapter extends RecyclerView.Adapter<FoodItemsAdapter.Food
 
     void fillView(DbFoodItem foodItem) {
       itemFoodTitle.setText(foodItem.getTitle());
+      itemFoodCategory.setText(foodItem.getCategory());
+      this.itemView.setOnClickListener(v -> onFoodItemClickedListener.onFoodItemClicked(foodItem));
     }
   }
 }

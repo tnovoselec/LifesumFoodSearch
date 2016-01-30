@@ -6,7 +6,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:fitsSystemWindows="true"
-  tools:context=".activity.FoodListActivity">
+  tools:context=".activity.FoodSearchActivity">
 
   <android.support.design.widget.AppBarLayout
     android:layout_width="match_parent"
@@ -19,12 +19,30 @@
       android:layout_height="?attr/actionBarSize"
       android:background="?attr/colorPrimary"
       app:layout_scrollFlags="scroll|enterAlways"
-      app:popupTheme="@style/AppTheme.PopupOverlay"/>
+      app:popupTheme="@style/AppTheme.PopupOverlay">
+      <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="16dp">
+        <EditText
+          android:id="@+id/food_search_label"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textColor="@color/colorPrimaryDark"/>
+        <ImageView
+          android:id="@+id/food_search_clear"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_gravity="right|center_vertical"
+          android:clickable="true"
+          android:src="@drawable/delete"/>
+      </FrameLayout>
+    </android.support.v7.widget.Toolbar>
 
   </android.support.design.widget.AppBarLayout>
 
   <android.support.v7.widget.RecyclerView
-    android:id="@+id/food_items_recycler"
+    android:id="@+id/food_search_recycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -32,13 +50,13 @@
 
   </android.support.v7.widget.RecyclerView>
   <TextView
-    android:id="@+id/food_items_empty"
+    android:id="@+id/food_search_empty"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:textStyle="bold"
     android:textSize="20sp"
-    android:text="@string/no_food_items"
+    android:text="@string/no_food_items_found"
     android:visibility="gone"/>
 
 </android.support.design.widget.CoordinatorLayout>

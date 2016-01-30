@@ -21,4 +21,5 @@ public interface ApplicationComponentExposes {
   LifesumClient provideLifesumClient();
 
   Realm provideRealm();
+
 }

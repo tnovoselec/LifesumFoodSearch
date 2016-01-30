@@ -7,7 +7,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.realm.Realm;
-import rx.Observable;
 
 public class FoodDao {
 
@@ -18,13 +17,24 @@ public class FoodDao {
     this.realm = realm;
   }
 
-  public void storeFoodItems(List<DbFoodItem> foodItems) {
+  public synchronized void storeFoodItems(List<DbFoodItem> foodItems) {
     realm.beginTransaction();
-    realm.copyToRealm(foodItems);
+    realm.copyToRealmOrUpdate(foodItems);
     realm.commitTransaction();
   }
 
-  public Observable<? extends List<DbFoodItem>> loadFoodItems() {
-    return realm.where(DbFoodItem.class).findAllAsync().asObservable();
+  public synchronized List<DbFoodItem> loadFoodItems() {
+    return realm.where(DbFoodItem.class).equalTo("favorite", true).findAll();
+  }
+
+  public synchronized void updateItemFavoriteStatus(DbFoodItem dbFoodItem, boolean isFavorite){
+    realm.beginTransaction();
+    dbFoodItem.setFavorite(isFavorite);
+    realm.copyToRealmOrUpdate(dbFoodItem);
+    realm.commitTransaction();
+  }
+
+  public synchronized DbFoodItem getItemById(long id){
+    return realm.where(DbFoodItem.class).equalTo("id", id).findFirst();
   }
 }

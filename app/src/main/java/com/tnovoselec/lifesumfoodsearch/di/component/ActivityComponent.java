@@ -2,6 +2,7 @@ package com.tnovoselec.lifesumfoodsearch.di.component;
 
 import android.content.Context;
 
+import com.tnovoselec.lifesumfoodsearch.Router;
 import com.tnovoselec.lifesumfoodsearch.di.BaseActivity;
 import com.tnovoselec.lifesumfoodsearch.di.module.ActivityModule;
 import com.tnovoselec.lifesumfoodsearch.di.qualifier.ForActivity;
@@ -36,4 +37,6 @@ public interface ActivityComponent extends ApplicationComponent, ActivityCompone
 
   @ForActivity
   Context provideActivityContext();
+
+  Router provideRouter();
 }

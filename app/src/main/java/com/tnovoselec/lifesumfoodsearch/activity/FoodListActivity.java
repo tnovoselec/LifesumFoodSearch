@@ -5,13 +5,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.tnovoselec.lifesumfoodsearch.R;
 import com.tnovoselec.lifesumfoodsearch.adapter.FoodItemsAdapter;
+import com.tnovoselec.lifesumfoodsearch.adapter.FoodItemsAdapter.OnFoodItemClickedListener;
 import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
 import com.tnovoselec.lifesumfoodsearch.di.BaseActivity;
 import com.tnovoselec.lifesumfoodsearch.di.component.ActivityComponent;
 import com.tnovoselec.lifesumfoodsearch.presenter.FoodListPresenter;
+import com.tnovoselec.lifesumfoodsearch.ui.DividerItemDecoration;
 import com.tnovoselec.lifesumfoodsearch.view.FoodListView;
 
 import java.util.List;
@@ -19,13 +24,16 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements FoodListView {
+public class FoodListActivity extends BaseActivity implements FoodListView {
 
   @Bind(R.id.food_items_recycler)
   RecyclerView foodItemsRecycler;
   @Bind(R.id.toolbar)
   Toolbar toolbar;
+  @Bind(R.id.food_items_empty)
+  View foodItemsEmpty;
 
   @Inject
   FoodListPresenter foodListPresenter;
@@ -36,12 +44,13 @@ public class MainActivity extends BaseActivity implements FoodListView {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    setContentView(R.layout.activity_food_list);
+    ButterKnife.bind(this);
     setSupportActionBar(toolbar);
 
+    foodItemsRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+    foodItemsRecycler.setHasFixedSize(true);
     foodItemsRecycler.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.VERTICAL, false));
-    foodItemsAdapter = new FoodItemsAdapter();
-    foodItemsRecycler.setAdapter(foodItemsAdapter);
   }
 
   @Override
@@ -49,6 +58,7 @@ public class MainActivity extends BaseActivity implements FoodListView {
     super.onResume();
     foodListPresenter.activate();
     foodListPresenter.takeView(this);
+    foodListPresenter.loadItems();
   }
 
   @Override
@@ -63,19 +73,35 @@ public class MainActivity extends BaseActivity implements FoodListView {
     activityComponent.inject(this);
   }
 
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_food_list, menu);
+    return super.onCreateOptionsMenu(menu);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_search:
+        foodListPresenter.onSearchClicked();
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
 
   @Override
   public void renderItems(List<DbFoodItem> foodItems) {
-    foodItemsAdapter.setData(foodItems);
+    foodItemsAdapter = new FoodItemsAdapter(foodItems, new OnFoodItemClickHandler());
+    foodItemsRecycler.setAdapter(foodItemsAdapter);
+    foodItemsEmpty.setVisibility(foodItems.isEmpty() ? View.VISIBLE : View.GONE);
   }
 
-  @Override
-  public void showProgress() {
+  private class OnFoodItemClickHandler implements OnFoodItemClickedListener {
 
+    @Override
+    public void onFoodItemClicked(DbFoodItem dbFoodItem) {
+      foodListPresenter.onFoodItemClicked(dbFoodItem);
+    }
   }
 
-  @Override
-  public void hideProgress() {
-
-  }
 }

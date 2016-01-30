@@ -4,8 +4,11 @@ import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
 
 import java.util.List;
 
-public interface FoodListView {
+public interface FoodSearchView {
 
   void renderItems(List<DbFoodItem> foodItems);
 
+  void showProgress();
+
+  void hideProgress();
 }

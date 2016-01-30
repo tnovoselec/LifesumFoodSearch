@@ -18,27 +18,27 @@
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize"
       android:background="?attr/colorPrimary"
-      app:layout_scrollFlags="scroll|enterAlways"
       app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
   </android.support.design.widget.AppBarLayout>
 
-  <android.support.v7.widget.RecyclerView
-    android:id="@+id/food_items_recycler"
+  <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    >
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
 
-  </android.support.v7.widget.RecyclerView>
-  <TextView
-    android:id="@+id/food_items_empty"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:textStyle="bold"
-    android:textSize="20sp"
-    android:text="@string/no_food_items"
-    android:visibility="gone"/>
+    </RelativeLayout>
+  </ScrollView>
+
+  <android.support.design.widget.FloatingActionButton
+    android:id="@+id/fab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/fab_margin"
+    android:src="@android:drawable/btn_star_big_on"/>
 
 </android.support.design.widget.CoordinatorLayout>

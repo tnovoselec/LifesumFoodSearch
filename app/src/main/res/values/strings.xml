@@ -3,4 +3,8 @@
   <string name="action_search">Search</string>
   <string name="no_food_items">You haven\'t saved any food items.\n Try searching for some!</string>
   <string name="no_food_items_found">No items match your query.</string>
+  <string name="category">Category</string>
+  <string name="fat">Fat</string>
+  <string name="potassium">Potassium</string>
+  <string name="calories">Calories</string>
 </resources>

@@ -11,7 +11,8 @@
   <android.support.design.widget.AppBarLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:theme="@style/AppTheme.AppBarOverlay">
+    android:theme="@style/AppTheme.AppBarOverlay"
+    app:layout_scrollFlags="scroll|enterAlways">
 
     <android.support.v7.widget.Toolbar
       android:id="@+id/toolbar"
@@ -25,11 +26,64 @@
   <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
+      <TextView
+        style="@style/FoodDetailsItemTitle"
+        android:id="@+id/food_details_category_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/category"/>
+      <TextView
+        style="@style/FoodDetailsItemValue"
+        android:id="@+id/food_details_category_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/food_details_category_title"/>
+
+      <TextView
+        style="@style/FoodDetailsItemTitle"
+        android:id="@+id/food_details_fat_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/food_details_category_value"
+        android:text="@string/fat"/>
+      <TextView
+        style="@style/FoodDetailsItemValue"
+        android:id="@+id/food_details_fat_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/food_details_fat_title"/>
+      <TextView
+        style="@style/FoodDetailsItemTitle"
+        android:id="@+id/food_details_potassium_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/food_details_fat_value"
+        android:text="@string/potassium"/>
+      <TextView
+        style="@style/FoodDetailsItemValue"
+        android:id="@+id/food_details_potassium_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/food_details_potassium_title"/>
+      <TextView
+        style="@style/FoodDetailsItemTitle"
+        android:id="@+id/food_details_calories_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/food_details_potassium_value"
+        android:text="@string/calories"/>
+      <TextView
+        style="@style/FoodDetailsItemValue"
+        android:id="@+id/food_details_calories_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/food_details_calories_title"/>
     </RelativeLayout>
   </ScrollView>
 

@@ -19,7 +19,12 @@ public class FoodDao {
 
   public synchronized void storeFoodItems(List<DbFoodItem> foodItems) {
     realm.beginTransaction();
-    realm.copyToRealmOrUpdate(foodItems);
+    for (DbFoodItem dbFoodItem : foodItems) {
+      if (getItemById(dbFoodItem.getId()) == null) {
+        realm.copyToRealmOrUpdate(dbFoodItem);
+      }
+    }
+
     realm.commitTransaction();
   }
 
@@ -27,14 +32,14 @@ public class FoodDao {
     return realm.where(DbFoodItem.class).equalTo("favorite", true).findAll();
   }
 
-  public synchronized void updateItemFavoriteStatus(DbFoodItem dbFoodItem, boolean isFavorite){
+  public synchronized void updateItemFavoriteStatus(DbFoodItem dbFoodItem, boolean isFavorite) {
     realm.beginTransaction();
     dbFoodItem.setFavorite(isFavorite);
     realm.copyToRealmOrUpdate(dbFoodItem);
     realm.commitTransaction();
   }
 
-  public synchronized DbFoodItem getItemById(long id){
+  public synchronized DbFoodItem getItemById(long id) {
     return realm.where(DbFoodItem.class).equalTo("id", id).findFirst();
   }
 }

@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -60,7 +61,7 @@ public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
     setContentView(R.layout.activity_food_search);
     ButterKnife.bind(this);
     setSupportActionBar(toolbar);
-
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     foodItemsRecycler.setLayoutManager(new LinearLayoutManager(this));
     foodItemsRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     foodItemsRecycler.setHasFixedSize(true);
@@ -82,6 +83,16 @@ public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
     foodSearchPresenter.releaseView();
     if (searchSubscription != null && !searchSubscription.isUnsubscribed()) {
       searchSubscription.unsubscribe();
+    }
+  }
+
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        onBackPressed();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
     }
   }
 

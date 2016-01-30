@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.tnovoselec.lifesumfoodsearch.R;
 import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
@@ -27,6 +29,15 @@ public class FoodDetailsActivity extends BaseActivity implements FoodDetailsView
   Toolbar toolbar;
   @Bind(R.id.fab)
   FloatingActionButton floatingActionButton;
+
+  @Bind(R.id.food_details_category_value)
+  TextView foodDetailsCategory;
+  @Bind(R.id.food_details_fat_value)
+  TextView foodDetailsFat;
+  @Bind(R.id.food_details_potassium_value)
+  TextView foodDetailsPotassium;
+  @Bind(R.id.food_details_calories_value)
+  TextView foodDetailsCalories;
 
   @Inject
   FoodDetailsPresenter foodDetailsPresenter;
@@ -54,8 +65,24 @@ public class FoodDetailsActivity extends BaseActivity implements FoodDetailsView
     toolbar.setTitle(dbFoodItem.getTitle());
 
     setSupportActionBar(toolbar);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     floatingActionButton.setImageResource(dbFoodItem.isFavorite() ? favoriteActiveDrawable : favoriteInactiveDrawable);
+
+    foodDetailsCategory.setText(dbFoodItem.getCategory());
+    foodDetailsCalories.setText(dbFoodItem.getCalories());
+    foodDetailsPotassium.setText(String.format("%s", dbFoodItem.getPotassium()));
+    foodDetailsFat.setText(dbFoodItem.getFat());
+  }
+
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        onBackPressed();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 
   @Override

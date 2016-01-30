@@ -28,7 +28,8 @@
           android:id="@+id/food_search_label"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:textColor="@color/colorPrimaryDark"/>
+          android:textColor="@color/colorPrimaryDark"
+          android:singleLine="true"/>
         <ImageView
           android:id="@+id/food_search_clear"
           android:layout_width="24dp"

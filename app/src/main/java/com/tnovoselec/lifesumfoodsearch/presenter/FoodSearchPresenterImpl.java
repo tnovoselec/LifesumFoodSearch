@@ -1,8 +1,11 @@
 package com.tnovoselec.lifesumfoodsearch.presenter;
 
+import android.util.Pair;
+
 import com.tnovoselec.lifesumfoodsearch.Router;
+import com.tnovoselec.lifesumfoodsearch.api.FlickrClient;
 import com.tnovoselec.lifesumfoodsearch.api.LifesumClient;
-import com.tnovoselec.lifesumfoodsearch.api.model.ApiFoodResponse;
+import com.tnovoselec.lifesumfoodsearch.api.model.ApiFoodItem;
 import com.tnovoselec.lifesumfoodsearch.business.ApiToDbConverter;
 import com.tnovoselec.lifesumfoodsearch.db.dao.FoodDao;
 import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
@@ -20,13 +23,15 @@ import rx.schedulers.Schedulers;
 public class FoodSearchPresenterImpl extends BasePresenter implements FoodSearchPresenter {
 
   private LifesumClient lifesumClient;
+  private FlickrClient flickrClient;
   private FoodDao foodDao;
   private Router router;
   private FoodSearchView foodSearchView;
 
   @Inject
-  public FoodSearchPresenterImpl(LifesumClient lifesumClient, FoodDao foodDao, Router router) {
+  public FoodSearchPresenterImpl(LifesumClient lifesumClient, FlickrClient flickrClient, FoodDao foodDao, Router router) {
     this.lifesumClient = lifesumClient;
+    this.flickrClient = flickrClient;
     this.foodDao = foodDao;
     this.router = router;
   }
@@ -36,6 +41,10 @@ public class FoodSearchPresenterImpl extends BasePresenter implements FoodSearch
     addSubscription(
         Observable.defer(() ->
             lifesumClient.getFoods(query, "en", "us"))
+            .flatMap(apiFoodResponse -> Observable.from(apiFoodResponse.apiFoodItems))
+            .flatMap(apiFoodItem -> flickrClient.pullImage(apiFoodItem.title)
+                .map(imageUrl -> Pair.create(apiFoodItem, imageUrl)))
+            .toList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -62,12 +71,12 @@ public class FoodSearchPresenterImpl extends BasePresenter implements FoodSearch
     foodDao.storeFoodItems(foodItems);
   }
 
-  private void onApiFoodItemsSearched(ApiFoodResponse apiFoodResponse) {
-    if (apiFoodResponse == null) {
+  private void onApiFoodItemsSearched(List<Pair<ApiFoodItem, String>> apiFoodItems) {
+    if (apiFoodItems == null || apiFoodItems.size() == 0) {
       foodSearchView.renderItems(Collections.emptyList());
       return;
     }
-    List<DbFoodItem> dbFoodItems = ApiToDbConverter.convertFromApi(apiFoodResponse.apiFoodItems);
+    List<DbFoodItem> dbFoodItems = ApiToDbConverter.convertFromApiWithImages(apiFoodItems);
     persistSearchResults(dbFoodItems);
     if (foodSearchView != null) {
       foodSearchView.renderItems(dbFoodItems);

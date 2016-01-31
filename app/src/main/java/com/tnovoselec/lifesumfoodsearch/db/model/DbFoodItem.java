@@ -20,6 +20,8 @@ public class DbFoodItem extends RealmObject{
 
   private String calories;
 
+  private String imageUrl;
+
   private boolean favorite;
 
   public long getId() {
@@ -86,4 +88,11 @@ public class DbFoodItem extends RealmObject{
     this.favorite = favorite;
   }
 
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
 }

@@ -8,6 +8,8 @@ import android.preference.PreferenceManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tnovoselec.lifesumfoodsearch.LifesumFoodSearchApplication;
+import com.tnovoselec.lifesumfoodsearch.api.FlickrApi;
+import com.tnovoselec.lifesumfoodsearch.api.FlickrClient;
 import com.tnovoselec.lifesumfoodsearch.api.LifesumApi;
 import com.tnovoselec.lifesumfoodsearch.api.LifesumClient;
 import com.tnovoselec.lifesumfoodsearch.di.qualifier.ForApplication;
@@ -70,9 +72,26 @@ public final class ApplicationModule {
 
   @Provides
   @Singleton
+  protected FlickrApi getFlickrApi(){
+    return new Retrofit.Builder()
+        .baseUrl(FlickrApi.API_ENDPOINT)
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        .build()
+        .create(FlickrApi.class);
+  }
+
+  @Provides
+  @Singleton
   protected LifesumClient getLifesumClient(LifesumApi lifesumApi){
     return new LifesumClient(lifesumApi);
   }
+
+  @Provides
+  @Singleton
+  protected FlickrClient getFlickrClient(FlickrApi flickrApi, Gson gson){
+    return new FlickrClient(flickrApi, gson);
+  }
+
 
   @Provides
   @Singleton

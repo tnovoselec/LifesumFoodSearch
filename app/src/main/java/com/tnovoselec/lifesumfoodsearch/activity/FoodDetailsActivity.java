@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.tnovoselec.lifesumfoodsearch.R;
 import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
 import com.tnovoselec.lifesumfoodsearch.di.BaseActivity;
@@ -38,6 +41,8 @@ public class FoodDetailsActivity extends BaseActivity implements FoodDetailsView
   TextView foodDetailsPotassium;
   @Bind(R.id.food_details_calories_value)
   TextView foodDetailsCalories;
+  @Bind(R.id.food_details_image)
+  ImageView foodDetailsImage;
 
   @Inject
   FoodDetailsPresenter foodDetailsPresenter;
@@ -73,6 +78,21 @@ public class FoodDetailsActivity extends BaseActivity implements FoodDetailsView
     foodDetailsCalories.setText(dbFoodItem.getCalories());
     foodDetailsPotassium.setText(String.format("%s", dbFoodItem.getPotassium()));
     foodDetailsFat.setText(dbFoodItem.getFat());
+    loadImage(dbFoodItem.getImageUrl());
+  }
+
+  private void loadImage(String imageUrl) {
+    if (TextUtils.isEmpty(imageUrl)) {
+      Picasso.with(this)
+          .load(R.mipmap.ic_launcher)
+          .into(foodDetailsImage);
+
+    } else {
+      Picasso.with(this)
+          .load(imageUrl)
+          .into(foodDetailsImage);
+    }
+
   }
 
   public boolean onOptionsItemSelected(MenuItem item) {

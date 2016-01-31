@@ -32,11 +32,18 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
+      <ImageView
+        android:id="@+id/food_details_image"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"/>
+
       <TextView
         style="@style/FoodDetailsItemTitle"
         android:id="@+id/food_details_category_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/food_details_image"
         android:text="@string/category"/>
       <TextView
         style="@style/FoodDetailsItemValue"

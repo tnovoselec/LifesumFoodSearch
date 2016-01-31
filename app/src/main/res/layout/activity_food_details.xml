@@ -43,47 +43,47 @@
         android:id="@+id/food_details_category_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/food_details_category_title"/>
+        android:layout_alignTop="@id/food_details_category_title"/>
 
       <TextView
         style="@style/FoodDetailsItemTitle"
         android:id="@+id/food_details_fat_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/food_details_category_value"
+        android:layout_below="@id/food_details_category_title"
         android:text="@string/fat"/>
       <TextView
         style="@style/FoodDetailsItemValue"
         android:id="@+id/food_details_fat_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/food_details_fat_title"/>
+        android:layout_alignTop="@id/food_details_fat_title"/>
       <TextView
         style="@style/FoodDetailsItemTitle"
         android:id="@+id/food_details_potassium_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/food_details_fat_value"
+        android:layout_below="@id/food_details_fat_title"
         android:text="@string/potassium"/>
       <TextView
         style="@style/FoodDetailsItemValue"
         android:id="@+id/food_details_potassium_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/food_details_potassium_title"/>
+        android:layout_alignTop="@id/food_details_potassium_title"/>
       <TextView
         style="@style/FoodDetailsItemTitle"
         android:id="@+id/food_details_calories_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/food_details_potassium_value"
+        android:layout_below="@id/food_details_potassium_title"
         android:text="@string/calories"/>
       <TextView
         style="@style/FoodDetailsItemValue"
         android:id="@+id/food_details_calories_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/food_details_calories_title"/>
+        android:layout_alignTop="@id/food_details_calories_title"/>
     </RelativeLayout>
   </ScrollView>
 

@@ -17,7 +17,6 @@ import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
 import com.tnovoselec.lifesumfoodsearch.di.BaseActivity;
 import com.tnovoselec.lifesumfoodsearch.di.component.ActivityComponent;
 import com.tnovoselec.lifesumfoodsearch.presenter.FoodSearchPresenter;
-import com.tnovoselec.lifesumfoodsearch.ui.DividerItemDecoration;
 import com.tnovoselec.lifesumfoodsearch.view.FoodSearchView;
 
 import java.util.List;
@@ -63,7 +62,6 @@ public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     foodItemsRecycler.setLayoutManager(new LinearLayoutManager(this));
-    foodItemsRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     foodItemsRecycler.setHasFixedSize(true);
   }
 

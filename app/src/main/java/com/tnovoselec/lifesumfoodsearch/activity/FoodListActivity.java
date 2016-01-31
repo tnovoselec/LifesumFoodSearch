@@ -16,7 +16,6 @@ import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
 import com.tnovoselec.lifesumfoodsearch.di.BaseActivity;
 import com.tnovoselec.lifesumfoodsearch.di.component.ActivityComponent;
 import com.tnovoselec.lifesumfoodsearch.presenter.FoodListPresenter;
-import com.tnovoselec.lifesumfoodsearch.ui.DividerItemDecoration;
 import com.tnovoselec.lifesumfoodsearch.view.FoodListView;
 
 import java.util.List;
@@ -48,7 +47,6 @@ public class FoodListActivity extends BaseActivity implements FoodListView {
     ButterKnife.bind(this);
     setSupportActionBar(toolbar);
 
-    foodItemsRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     foodItemsRecycler.setHasFixedSize(true);
     foodItemsRecycler.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.VERTICAL, false));
   }

@@ -44,6 +44,8 @@ public class FoodSearchPresenterImpl extends BasePresenter implements FoodSearch
   @Override
   public void searchForFood(String query) {
 
+    foodSearchView.showProgress();
+
     if (currentSearch != null && !currentSearch.isUnsubscribed()){
       currentSearch.unsubscribe();
     }
@@ -82,6 +84,9 @@ public class FoodSearchPresenterImpl extends BasePresenter implements FoodSearch
   }
 
   private void onApiFoodItemsSearched(List<Pair<ApiFoodItem, String>> apiFoodItems) {
+
+    foodSearchView.hideProgress();
+
     if (apiFoodItems == null || apiFoodItems.size() == 0) {
       foodSearchView.renderItems(Collections.emptyList());
       return;
@@ -92,6 +97,7 @@ public class FoodSearchPresenterImpl extends BasePresenter implements FoodSearch
     if (foodSearchView != null) {
       foodSearchView.renderItems(foodItemViewModels);
     }
+
   }
 
   private void onDbFoodItemsSearchFailed(Throwable throwable) {

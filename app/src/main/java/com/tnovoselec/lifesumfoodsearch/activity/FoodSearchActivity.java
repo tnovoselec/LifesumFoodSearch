@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -27,11 +28,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.android.widget.WidgetObservable;
 
 public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
 
   private static final long DEBOUNCE_OFFSET = 350L;
+  private static final int MINIMUM_QUERY_LENGTH = 3;
 
   @Bind(R.id.food_search_recycler)
   RecyclerView foodItemsRecycler;
@@ -41,6 +44,8 @@ public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
   View foodItemsEmpty;
   @Bind(R.id.food_search_label)
   EditText foodSearchLabel;
+  @Bind(R.id.food_search_progress_container)
+  View foodSearchProgressContainer;
 
   @Inject
   FoodSearchPresenter foodSearchPresenter;
@@ -107,18 +112,24 @@ public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
 
   @Override
   public void showProgress() {
-
+    foodSearchProgressContainer.setVisibility(View.VISIBLE);
+    foodSearchProgressContainer.animate().alpha(1);
   }
 
   @Override
   public void hideProgress() {
 
+    foodSearchProgressContainer.animate()
+        .alpha(0)
+        .withEndAction(() -> foodSearchProgressContainer.setVisibility(View.GONE));
   }
 
   private void bindSearch() {
     searchSubscription = WidgetObservable.text(foodSearchLabel)
         .debounce(DEBOUNCE_OFFSET, TimeUnit.MILLISECONDS)
         .map(onTextChangeEvent -> onTextChangeEvent.text().toString())
+        .subscribeOn(AndroidSchedulers.mainThread())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             this::performSearch,
             this::onError
@@ -126,7 +137,9 @@ public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
   }
 
   private void performSearch(String query) {
-    foodSearchPresenter.searchForFood(query);
+    if (!TextUtils.isEmpty(query) && query.length() >= MINIMUM_QUERY_LENGTH) {
+      foodSearchPresenter.searchForFood(query);
+    }
   }
 
   private void onError(Throwable throwable) {

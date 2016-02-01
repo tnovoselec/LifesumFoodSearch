@@ -8,4 +8,6 @@
   <string name="potassium">Potassium</string>
   <string name="calories">Calories</string>
   <string name="saved_items">Saved items</string>
+  <string name="search_food">Search food</string>
+  <string name="food_search_hint">Pizza</string>
 </resources>

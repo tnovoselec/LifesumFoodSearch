@@ -104,7 +104,7 @@ public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
 
   @Override
   public void renderItems(List<FoodItemViewModel> foodItems) {
-    foodItemsAdapter = new FoodItemsAdapter(foodItems, new OnFoodItemClickHandler());
+    foodItemsAdapter = new FoodItemsAdapter(foodItems, new OnFoodItemClickHandler(), FoodItemsAdapter.Mode.LIST);
     foodItemsRecycler.setAdapter(foodItemsAdapter);
     foodItemsEmpty.setVisibility(foodItems.isEmpty() ? View.VISIBLE : View.GONE);
     foodItemsRecycler.setVisibility(!foodItems.isEmpty() ? View.VISIBLE : View.GONE);

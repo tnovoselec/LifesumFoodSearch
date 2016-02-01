@@ -9,9 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 import com.tnovoselec.lifesumfoodsearch.R;
 import com.tnovoselec.lifesumfoodsearch.model.FoodItemViewModel;
 import com.tnovoselec.lifesumfoodsearch.ui.CircleTransform;
+import com.tnovoselec.lifesumfoodsearch.ui.IgnoreTransform;
 
 import java.util.List;
 
@@ -20,21 +22,28 @@ import butterknife.ButterKnife;
 
 public class FoodItemsAdapter extends RecyclerView.Adapter<FoodItemsAdapter.FoodItemViewHolder> {
 
+  public enum Mode{
+    LIST, GRID
+  }
+
   public interface OnFoodItemClickedListener{
     void onFoodItemClicked(FoodItemViewModel dbFoodItem);
   }
 
   private final List<FoodItemViewModel> foodItems;
   private final OnFoodItemClickedListener onFoodItemClickedListener;
+  private final Mode mode;
 
-  public FoodItemsAdapter(List<FoodItemViewModel> foodItems, OnFoodItemClickedListener onFoodItemClickedListener) {
+  public FoodItemsAdapter(List<FoodItemViewModel> foodItems, OnFoodItemClickedListener onFoodItemClickedListener, Mode mode) {
     this.foodItems = foodItems;
     this.onFoodItemClickedListener = onFoodItemClickedListener;
+    this.mode = mode;
   }
 
   @Override
   public FoodItemsAdapter.FoodItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_food, parent, false);
+    int layoutId = mode == Mode.LIST ? R.layout.item_food_list : R.layout.item_food_grid;
+    View itemView = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
     return new FoodItemViewHolder(itemView);
   }
 
@@ -72,15 +81,16 @@ public class FoodItemsAdapter extends RecyclerView.Adapter<FoodItemsAdapter.Food
     }
 
     private void loadImage(String imageUrl) {
+      Transformation transformation = mode == Mode.LIST ? new CircleTransform() : new IgnoreTransform();
       if (TextUtils.isEmpty(imageUrl)) {
         Picasso.with(itemView.getContext())
             .load(R.mipmap.ic_launcher)
-            .transform(new CircleTransform())
+            .transform(transformation)
             .into(itemFoodImage);
       } else {
         Picasso.with(itemView.getContext())
             .load(imageUrl)
-            .transform(new CircleTransform())
+            .transform(transformation)
             .into(itemFoodImage);
       }
     }

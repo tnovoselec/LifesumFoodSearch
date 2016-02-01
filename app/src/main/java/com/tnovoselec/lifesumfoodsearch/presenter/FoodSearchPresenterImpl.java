@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -28,6 +29,8 @@ public class FoodSearchPresenterImpl extends BasePresenter implements FoodSearch
   private Router router;
   private FoodSearchView foodSearchView;
 
+  private Subscription currentSearch;
+
   @Inject
   public FoodSearchPresenterImpl(LifesumClient lifesumClient, FlickrClient flickrClient, FoodDao foodDao, Router router) {
     this.lifesumClient = lifesumClient;
@@ -38,18 +41,23 @@ public class FoodSearchPresenterImpl extends BasePresenter implements FoodSearch
 
   @Override
   public void searchForFood(String query) {
-    addSubscription(
-        Observable.defer(() ->
-            lifesumClient.getFoods(query, "en", "us"))
-            .flatMap(apiFoodResponse -> Observable.from(apiFoodResponse.apiFoodItems))
-            .flatMap(apiFoodItem -> flickrClient.pullImage(apiFoodItem.title)
-                .map(imageUrl -> Pair.create(apiFoodItem, imageUrl)))
-            .toList()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                this::onApiFoodItemsSearched,
-                this::onDbFoodItemsSearchFailed));
+
+    if (currentSearch != null && !currentSearch.isUnsubscribed()){
+      currentSearch.unsubscribe();
+    }
+
+    currentSearch = Observable.defer(() ->
+        lifesumClient.getFoods(query, "en", "us"))
+        .flatMap(apiFoodResponse -> Observable.from(apiFoodResponse.apiFoodItems))
+        .flatMap(apiFoodItem -> flickrClient.pullImage(apiFoodItem.title)
+            .map(imageUrl -> Pair.create(apiFoodItem, imageUrl)))
+        .toList()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+            this::onApiFoodItemsSearched,
+            this::onDbFoodItemsSearchFailed);
+    addSubscription(currentSearch);
   }
 
   @Override

@@ -19,6 +19,9 @@ public class FoodDao {
 
   public synchronized void storeFoodItems(List<DbFoodItem> foodItems) {
     realm.beginTransaction();
+
+    realm.where(DbFoodItem.class).equalTo("favorite", false).findAll().clear();
+    
     for (DbFoodItem dbFoodItem : foodItems) {
       if (getItemById(dbFoodItem.getId()) == null) {
         realm.copyToRealmOrUpdate(dbFoodItem);

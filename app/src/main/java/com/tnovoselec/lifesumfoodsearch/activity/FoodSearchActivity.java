@@ -6,16 +6,15 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
 import com.tnovoselec.lifesumfoodsearch.R;
 import com.tnovoselec.lifesumfoodsearch.adapter.FoodItemsAdapter;
-import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
 import com.tnovoselec.lifesumfoodsearch.di.BaseActivity;
 import com.tnovoselec.lifesumfoodsearch.di.component.ActivityComponent;
+import com.tnovoselec.lifesumfoodsearch.model.FoodItemViewModel;
 import com.tnovoselec.lifesumfoodsearch.presenter.FoodSearchPresenter;
 import com.tnovoselec.lifesumfoodsearch.view.FoodSearchView;
 
@@ -29,7 +28,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 import rx.android.widget.WidgetObservable;
-import rx.functions.Action0;
 
 public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
 
@@ -100,7 +98,7 @@ public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
   }
 
   @Override
-  public void renderItems(List<DbFoodItem> foodItems) {
+  public void renderItems(List<FoodItemViewModel> foodItems) {
     foodItemsAdapter = new FoodItemsAdapter(foodItems, new OnFoodItemClickHandler());
     foodItemsRecycler.setAdapter(foodItemsAdapter);
     foodItemsEmpty.setVisibility(foodItems.isEmpty() ? View.VISIBLE : View.GONE);
@@ -123,12 +121,7 @@ public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
         .map(onTextChangeEvent -> onTextChangeEvent.text().toString())
         .subscribe(
             this::performSearch,
-            this::onError, new Action0() {
-              @Override
-              public void call() {
-                Log.d("asda","oncomplete");
-              }
-            }
+            this::onError
         );
   }
 
@@ -148,8 +141,8 @@ public class FoodSearchActivity extends BaseActivity implements FoodSearchView {
   private class OnFoodItemClickHandler implements FoodItemsAdapter.OnFoodItemClickedListener {
 
     @Override
-    public void onFoodItemClicked(DbFoodItem dbFoodItem) {
-      foodSearchPresenter.onFoodItemClicked(dbFoodItem);
+    public void onFoodItemClicked(FoodItemViewModel foodItemViewModel) {
+      foodSearchPresenter.onFoodItemClicked(foodItemViewModel);
     }
   }
 

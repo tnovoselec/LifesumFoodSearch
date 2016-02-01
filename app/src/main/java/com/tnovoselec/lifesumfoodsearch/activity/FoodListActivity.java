@@ -12,9 +12,9 @@ import android.view.View;
 import com.tnovoselec.lifesumfoodsearch.R;
 import com.tnovoselec.lifesumfoodsearch.adapter.FoodItemsAdapter;
 import com.tnovoselec.lifesumfoodsearch.adapter.FoodItemsAdapter.OnFoodItemClickedListener;
-import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
 import com.tnovoselec.lifesumfoodsearch.di.BaseActivity;
 import com.tnovoselec.lifesumfoodsearch.di.component.ActivityComponent;
+import com.tnovoselec.lifesumfoodsearch.model.FoodItemViewModel;
 import com.tnovoselec.lifesumfoodsearch.presenter.FoodListPresenter;
 import com.tnovoselec.lifesumfoodsearch.view.FoodListView;
 
@@ -88,7 +88,7 @@ public class FoodListActivity extends BaseActivity implements FoodListView {
   }
 
   @Override
-  public void renderItems(List<DbFoodItem> foodItems) {
+  public void renderItems(List<FoodItemViewModel> foodItems) {
     foodItemsAdapter = new FoodItemsAdapter(foodItems, new OnFoodItemClickHandler());
     foodItemsRecycler.setAdapter(foodItemsAdapter);
     foodItemsEmpty.setVisibility(foodItems.isEmpty() ? View.VISIBLE : View.GONE);
@@ -97,7 +97,7 @@ public class FoodListActivity extends BaseActivity implements FoodListView {
   private class OnFoodItemClickHandler implements OnFoodItemClickedListener {
 
     @Override
-    public void onFoodItemClicked(DbFoodItem dbFoodItem) {
+    public void onFoodItemClicked(FoodItemViewModel dbFoodItem) {
       foodListPresenter.onFoodItemClicked(dbFoodItem);
     }
   }

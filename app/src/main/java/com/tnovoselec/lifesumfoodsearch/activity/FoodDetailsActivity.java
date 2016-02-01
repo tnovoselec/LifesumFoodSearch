@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tnovoselec.lifesumfoodsearch.R;
-import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
 import com.tnovoselec.lifesumfoodsearch.di.BaseActivity;
 import com.tnovoselec.lifesumfoodsearch.di.component.ActivityComponent;
+import com.tnovoselec.lifesumfoodsearch.model.FoodItemViewModel;
 import com.tnovoselec.lifesumfoodsearch.presenter.FoodDetailsPresenter;
 import com.tnovoselec.lifesumfoodsearch.view.FoodDetailsView;
 
@@ -47,15 +47,15 @@ public class FoodDetailsActivity extends BaseActivity implements FoodDetailsView
   @Inject
   FoodDetailsPresenter foodDetailsPresenter;
 
-  private DbFoodItem dbFoodItem;
+  private FoodItemViewModel foodItemViewModel;
 
   private final int favoriteActiveDrawable = android.R.drawable.btn_star_big_on;
   private final int favoriteInactiveDrawable = android.R.drawable.btn_star_big_off;
 
 
-  public static Intent createIntent(Context context, DbFoodItem dbFoodItem) {
+  public static Intent createIntent(Context context, long itemId) {
     Intent intent = new Intent(context, FoodDetailsActivity.class);
-    intent.putExtra(KEY_FOOD_ITEM_ID, dbFoodItem.getId());
+    intent.putExtra(KEY_FOOD_ITEM_ID, itemId);
     return intent;
   }
 
@@ -66,19 +66,19 @@ public class FoodDetailsActivity extends BaseActivity implements FoodDetailsView
     ButterKnife.bind(this);
 
     long id = getIntent().getLongExtra(KEY_FOOD_ITEM_ID, -1);
-    dbFoodItem = foodDetailsPresenter.getDbFoodItem(id);
-    toolbar.setTitle(dbFoodItem.getTitle());
+    foodItemViewModel = foodDetailsPresenter.getDbFoodItem(id);
+    toolbar.setTitle(foodItemViewModel.getTitle());
 
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    floatingActionButton.setImageResource(dbFoodItem.isFavorite() ? favoriteActiveDrawable : favoriteInactiveDrawable);
+    floatingActionButton.setImageResource(foodItemViewModel.isFavorite() ? favoriteActiveDrawable : favoriteInactiveDrawable);
 
-    foodDetailsCategory.setText(dbFoodItem.getCategory());
-    foodDetailsCalories.setText(dbFoodItem.getCalories());
-    foodDetailsPotassium.setText(String.format("%s", dbFoodItem.getPotassium()));
-    foodDetailsFat.setText(dbFoodItem.getFat());
-    loadImage(dbFoodItem.getImageUrl());
+    foodDetailsCategory.setText(foodItemViewModel.getCategory());
+    foodDetailsCalories.setText(foodItemViewModel.getCalories());
+    foodDetailsPotassium.setText(String.format("%s", foodItemViewModel.getPotassium()));
+    foodDetailsFat.setText(foodItemViewModel.getFat());
+    loadImage(foodItemViewModel.getImageUrl());
   }
 
   private void loadImage(String imageUrl) {
@@ -112,7 +112,8 @@ public class FoodDetailsActivity extends BaseActivity implements FoodDetailsView
 
   @OnClick(R.id.fab)
   public void onFavoriteButtonClicked() {
-    foodDetailsPresenter.onFavoriteClicked(dbFoodItem, !dbFoodItem.isFavorite());
-    floatingActionButton.setImageResource(dbFoodItem.isFavorite() ? favoriteActiveDrawable : favoriteInactiveDrawable);
+    foodDetailsPresenter.onFavoriteClicked(foodItemViewModel, !foodItemViewModel.isFavorite());
+    foodItemViewModel = foodDetailsPresenter.getDbFoodItem(foodItemViewModel.getId());
+    floatingActionButton.setImageResource(foodItemViewModel.isFavorite() ? favoriteActiveDrawable : favoriteInactiveDrawable);
   }
 }

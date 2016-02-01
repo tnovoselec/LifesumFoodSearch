@@ -1,8 +1,10 @@
 package com.tnovoselec.lifesumfoodsearch.presenter;
 
 import com.tnovoselec.lifesumfoodsearch.Router;
+import com.tnovoselec.lifesumfoodsearch.business.DbToViewModelConverter;
 import com.tnovoselec.lifesumfoodsearch.db.dao.FoodDao;
 import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
+import com.tnovoselec.lifesumfoodsearch.model.FoodItemViewModel;
 import com.tnovoselec.lifesumfoodsearch.view.FoodListView;
 
 import java.util.List;
@@ -31,21 +33,13 @@ public class FoodListPresenterImpl extends BasePresenter implements FoodListPres
 
   @Override
   public void loadItems() {
-//    addSubscribtion(
-//        foodDao.loadFoodItems()
-//            .subscribeOn(AndroidSchedulers.mainThread())
-//            .subscribe(
-//                this::onDbFoodItemsLoaded,
-//                this::onDbFoodItemsLoadFailed
-//            )
-//    );
     List<DbFoodItem> dbFoodItems = foodDao.loadFoodItems();
     onDbFoodItemsLoaded(dbFoodItems);
   }
 
   @Override
-  public void onFoodItemClicked(DbFoodItem dbFoodItem) {
-    router.startFoodDetailsActivity(dbFoodItem);
+  public void onFoodItemClicked(FoodItemViewModel foodItemViewModel) {
+    router.startFoodDetailsActivity(foodItemViewModel.getId());
   }
 
   @Override
@@ -56,7 +50,8 @@ public class FoodListPresenterImpl extends BasePresenter implements FoodListPres
 
   private void onDbFoodItemsLoaded(List<DbFoodItem> foodItems) {
     if (foodListView != null) {
-      foodListView.renderItems(foodItems);
+      List<FoodItemViewModel> foodItemViewModels = DbToViewModelConverter.fromDb(foodItems);
+      foodListView.renderItems(foodItemViewModels);
     }
   }
 

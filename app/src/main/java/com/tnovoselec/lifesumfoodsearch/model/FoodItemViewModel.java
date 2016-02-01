@@ -1,11 +1,7 @@
-package com.tnovoselec.lifesumfoodsearch.db.model;
+package com.tnovoselec.lifesumfoodsearch.model;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+public class FoodItemViewModel {
 
-public class DbFoodItem extends RealmObject {
-
-  @PrimaryKey
   private long id;
 
   private String categoryid;
@@ -23,14 +19,6 @@ public class DbFoodItem extends RealmObject {
   private String imageUrl;
 
   private boolean favorite;
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
 
   public String getCalories() {
     return calories;
@@ -64,6 +52,30 @@ public class DbFoodItem extends RealmObject {
     this.fat = fat;
   }
 
+  public boolean isFavorite() {
+    return favorite;
+  }
+
+  public void setFavorite(boolean favorite) {
+    this.favorite = favorite;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
+
   public double getPotassium() {
     return potassium;
   }
@@ -78,21 +90,5 @@ public class DbFoodItem extends RealmObject {
 
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  public boolean isFavorite() {
-    return favorite;
-  }
-
-  public void setFavorite(boolean favorite) {
-    this.favorite = favorite;
-  }
-
-  public String getImageUrl() {
-    return imageUrl;
-  }
-
-  public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
   }
 }

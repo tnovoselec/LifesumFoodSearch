@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.tnovoselec.lifesumfoodsearch.activity.FoodDetailsActivity;
 import com.tnovoselec.lifesumfoodsearch.activity.FoodSearchActivity;
-import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
 
 import javax.inject.Inject;
 
@@ -17,8 +16,8 @@ public class Router {
     this.context = context;
   }
 
-  public void startFoodDetailsActivity(DbFoodItem dbFoodItem) {
-    context.startActivity(FoodDetailsActivity.createIntent(context, dbFoodItem));
+  public void startFoodDetailsActivity(long itemId) {
+    context.startActivity(FoodDetailsActivity.createIntent(context, itemId));
   }
 
   public void startFoodSearchActivity() {

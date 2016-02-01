@@ -1,7 +1,8 @@
 package com.tnovoselec.lifesumfoodsearch.presenter;
 
+import com.tnovoselec.lifesumfoodsearch.business.DbToViewModelConverter;
 import com.tnovoselec.lifesumfoodsearch.db.dao.FoodDao;
-import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
+import com.tnovoselec.lifesumfoodsearch.model.FoodItemViewModel;
 
 import javax.inject.Inject;
 
@@ -15,12 +16,12 @@ public class FoodDetailsPresenterImpl extends BasePresenter implements FoodDetai
   }
 
   @Override
-  public DbFoodItem getDbFoodItem(long id) {
-    return foodDao.getItemById(id);
+  public FoodItemViewModel getDbFoodItem(long id) {
+    return DbToViewModelConverter.fromDb(foodDao.getItemById(id));
   }
 
   @Override
-  public void onFavoriteClicked(DbFoodItem dbFoodItem, boolean isFavorite) {
-    foodDao.updateItemFavoriteStatus(dbFoodItem, isFavorite);
+  public void onFavoriteClicked(FoodItemViewModel foodItemViewModel, boolean isFavorite) {
+    foodDao.updateItemFavoriteStatus(foodItemViewModel.getId(), isFavorite);
   }
 }

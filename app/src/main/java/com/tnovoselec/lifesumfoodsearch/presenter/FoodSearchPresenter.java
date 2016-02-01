@@ -1,6 +1,6 @@
 package com.tnovoselec.lifesumfoodsearch.presenter;
 
-import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
+import com.tnovoselec.lifesumfoodsearch.model.FoodItemViewModel;
 import com.tnovoselec.lifesumfoodsearch.view.FoodSearchView;
 
 public interface FoodSearchPresenter extends ScopedPresenter {
@@ -11,5 +11,5 @@ public interface FoodSearchPresenter extends ScopedPresenter {
 
   void releaseView();
 
-  void onFoodItemClicked(DbFoodItem dbFoodItem);
+  void onFoodItemClicked(FoodItemViewModel dbFoodItem);
 }

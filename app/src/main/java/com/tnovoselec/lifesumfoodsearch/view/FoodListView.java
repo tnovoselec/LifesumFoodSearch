@@ -1,11 +1,11 @@
 package com.tnovoselec.lifesumfoodsearch.view;
 
-import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
+import com.tnovoselec.lifesumfoodsearch.model.FoodItemViewModel;
 
 import java.util.List;
 
 public interface FoodListView {
 
-  void renderItems(List<DbFoodItem> foodItems);
+  void renderItems(List<FoodItemViewModel> foodItemViewModels);
 
 }

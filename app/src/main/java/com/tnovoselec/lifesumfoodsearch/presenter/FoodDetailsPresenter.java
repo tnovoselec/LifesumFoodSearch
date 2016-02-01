@@ -1,10 +1,10 @@
 package com.tnovoselec.lifesumfoodsearch.presenter;
 
-import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
+import com.tnovoselec.lifesumfoodsearch.model.FoodItemViewModel;
 
 public interface FoodDetailsPresenter {
 
-  DbFoodItem getDbFoodItem(long id);
+  FoodItemViewModel getDbFoodItem(long id);
 
-  void onFavoriteClicked(DbFoodItem dbFoodItem, boolean makeFavorite);
+  void onFavoriteClicked(FoodItemViewModel foodItemViewModel, boolean makeFavorite);
 }

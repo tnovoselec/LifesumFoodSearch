@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tnovoselec.lifesumfoodsearch.R;
-import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
+import com.tnovoselec.lifesumfoodsearch.model.FoodItemViewModel;
 import com.tnovoselec.lifesumfoodsearch.ui.CircleTransform;
 
 import java.util.List;
@@ -21,13 +21,13 @@ import butterknife.ButterKnife;
 public class FoodItemsAdapter extends RecyclerView.Adapter<FoodItemsAdapter.FoodItemViewHolder> {
 
   public interface OnFoodItemClickedListener{
-    void onFoodItemClicked(DbFoodItem dbFoodItem);
+    void onFoodItemClicked(FoodItemViewModel dbFoodItem);
   }
 
-  private final List<DbFoodItem> foodItems;
+  private final List<FoodItemViewModel> foodItems;
   private final OnFoodItemClickedListener onFoodItemClickedListener;
 
-  public FoodItemsAdapter(List<DbFoodItem> foodItems, OnFoodItemClickedListener onFoodItemClickedListener) {
+  public FoodItemsAdapter(List<FoodItemViewModel> foodItems, OnFoodItemClickedListener onFoodItemClickedListener) {
     this.foodItems = foodItems;
     this.onFoodItemClickedListener = onFoodItemClickedListener;
   }
@@ -64,7 +64,7 @@ public class FoodItemsAdapter extends RecyclerView.Adapter<FoodItemsAdapter.Food
       ButterKnife.bind(this, itemView);
     }
 
-    void fillView(DbFoodItem foodItem) {
+    void fillView(FoodItemViewModel foodItem) {
       loadImage(foodItem.getImageUrl());
       itemFoodTitle.setText(foodItem.getTitle());
       itemFoodCategory.setText(foodItem.getCategory());
@@ -83,7 +83,6 @@ public class FoodItemsAdapter extends RecyclerView.Adapter<FoodItemsAdapter.Food
             .transform(new CircleTransform())
             .into(itemFoodImage);
       }
-
     }
   }
 }

@@ -21,7 +21,7 @@ public class FoodDao {
     realm.beginTransaction();
 
     realm.where(DbFoodItem.class).equalTo("favorite", false).findAll().clear();
-    
+
     for (DbFoodItem dbFoodItem : foodItems) {
       if (getItemById(dbFoodItem.getId()) == null) {
         realm.copyToRealmOrUpdate(dbFoodItem);
@@ -35,8 +35,9 @@ public class FoodDao {
     return realm.where(DbFoodItem.class).equalTo("favorite", true).findAll();
   }
 
-  public synchronized void updateItemFavoriteStatus(DbFoodItem dbFoodItem, boolean isFavorite) {
+  public synchronized void updateItemFavoriteStatus(long id, boolean isFavorite) {
     realm.beginTransaction();
+    DbFoodItem dbFoodItem = getItemById(id);
     dbFoodItem.setFavorite(isFavorite);
     realm.copyToRealmOrUpdate(dbFoodItem);
     realm.commitTransaction();

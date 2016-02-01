@@ -7,8 +7,10 @@ import com.tnovoselec.lifesumfoodsearch.api.FlickrClient;
 import com.tnovoselec.lifesumfoodsearch.api.LifesumClient;
 import com.tnovoselec.lifesumfoodsearch.api.model.ApiFoodItem;
 import com.tnovoselec.lifesumfoodsearch.business.ApiToDbConverter;
+import com.tnovoselec.lifesumfoodsearch.business.DbToViewModelConverter;
 import com.tnovoselec.lifesumfoodsearch.db.dao.FoodDao;
 import com.tnovoselec.lifesumfoodsearch.db.model.DbFoodItem;
+import com.tnovoselec.lifesumfoodsearch.model.FoodItemViewModel;
 import com.tnovoselec.lifesumfoodsearch.view.FoodSearchView;
 
 import java.util.Collections;
@@ -71,8 +73,8 @@ public class FoodSearchPresenterImpl extends BasePresenter implements FoodSearch
   }
 
   @Override
-  public void onFoodItemClicked(DbFoodItem dbFoodItem) {
-    router.startFoodDetailsActivity(dbFoodItem);
+  public void onFoodItemClicked(FoodItemViewModel foodItemViewModel) {
+    router.startFoodDetailsActivity(foodItemViewModel.getId());
   }
 
   private void persistSearchResults(List<DbFoodItem> foodItems) {
@@ -86,8 +88,9 @@ public class FoodSearchPresenterImpl extends BasePresenter implements FoodSearch
     }
     List<DbFoodItem> dbFoodItems = ApiToDbConverter.convertFromApiWithImages(apiFoodItems);
     persistSearchResults(dbFoodItems);
+    List<FoodItemViewModel> foodItemViewModels = DbToViewModelConverter.fromDb(dbFoodItems);
     if (foodSearchView != null) {
-      foodSearchView.renderItems(dbFoodItems);
+      foodSearchView.renderItems(foodItemViewModels);
     }
   }
 
